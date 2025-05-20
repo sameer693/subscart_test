@@ -159,17 +159,7 @@ class DeliveryService {
       const endOfNewDay = new Date(newDateObj);
       endOfNewDay.setHours(23, 59, 59, 999);
 
-      const existingDelivery = await Delivery.findOne({
-        subscriptionId: delivery.subscriptionId,
-        _id: { $ne: deliveryId }, // Exclude current delivery
-        deliveryDate: { $gte: startOfNewDay, $lte: endOfNewDay },
-      });
-
-      if (existingDelivery) {
-        throw new Error(
-          "A delivery from this subscription already exists on the selected date"
-        );
-      }
+      
 
       delivery.deliveryDate = newDateObj; // Use the Date object
     }
