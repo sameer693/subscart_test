@@ -1,18 +1,21 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middlewares/auth');
 
 const router = express.Router();
 
-// Route to create a new user
-router.post('/users', userController.createUser);
+// Authentication routes
+router.post('/register', userController.register);
+router.post('/login', userController.login);
 
-// Route to get user details
-router.get('/users/:id', userController.getUser);
+// Protected routes (require authentication)
+router.get('/me', authMiddleware, userController.getProfile);
+router.put('/me', authMiddleware, userController.updateProfile);
 
-// Route to update user details
-// router.put('/users/:id', userController.updateUser);
-
-// Route to delete a user
-// router.delete('/users/:id', userController.deleteUser);
+// Admin routes
+// router.get('/users', authMiddleware, userController.getAllUsers);
+// router.get('/users/:id', authMiddleware, userController.getUserById);
+// router.put('/users/:id', authMiddleware, userController.updateUser);
+// router.delete('/users/:id', authMiddleware, userController.deleteUser);
 
 module.exports = router;

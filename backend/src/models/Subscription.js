@@ -1,25 +1,52 @@
-class Subscription {
-    constructor(userId, plan, status = 'active') {
-        this.userId = userId;
-        this.plan = plan;
-        this.status = status;
-    }
+const mongoose = require('mongoose');
 
-    static create(subscriptionData) {
-        // Logic to create a new subscription in the database
-    }
+const subscriptionSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  plan: {
+    type: String,
+    required: true,
+    enum: ['basic', 'premium', 'family', 'keto', 'vegetarian']
+  },
+  status: {
+    type: String,
+    enum: ['active', 'paused', 'cancelled'],
+    default: 'active'
+  },
+  deliveryDays: [{
+    type: String,
+    enum: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+  }],
+  deliveryTime: {
+    type: String,
+    default: '14:00' // Default delivery time in 24-hour format
+  },
+  startDate: {
+    type: Date,
+    default: Date.now
+  },
+  endDate: {
+    type: Date
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-    static update(subscriptionId, updatedData) {
-        // Logic to update an existing subscription in the database
-    }
+// Update timestamp on save
+subscriptionSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
+});
 
-    static retrieve(subscriptionId) {
-        // Logic to retrieve a subscription from the database
-    }
-
-    static retrieveByUserId(userId) {
-        // Logic to retrieve subscriptions by user ID from the database
-    }
-}
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 module.exports = Subscription;

@@ -5,12 +5,6 @@ const subscriptionController = require('../controllers/subscriptionController');
 // Route to create a new subscription
 router.post('/', subscriptionController.createSubscription);
 
-// // Route to get all subscriptions
-// router.get('/', subscriptionController.getAllSubscriptions);
-
-// // Route to get a subscription by ID
-// router.get('/:id', subscriptionController.getSubscriptionById);
-
 // Route to update a subscription
 router.put('/:id', subscriptionController.updateSubscription);
 
